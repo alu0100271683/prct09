@@ -57,11 +57,18 @@ module Bib
             end
             nodo2.value
         end
-        def each(&block)
+        def to_s()
+            nodo = @head
+            while (nodo != nil) do
+                "#{nodo.value}"
+                nodo = nodo.next
+            end
+        end
+        def each()
             current_node = @head
             
             while current_node != nil
-                block.call(current_node)
+                yield current_node.value
                 current_node = current_node.next
             end
         end

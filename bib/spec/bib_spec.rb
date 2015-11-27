@@ -144,8 +144,11 @@ describe Bib do
     it "comparando atributo" do
       expect(@de < @ap).to eq(true)
     end
+    it "comparando nombres" do
+      expect(@p.nombre == @a.nombre).to eq(true)
+    end
   end
-  context "# comparaciones jerarquicas" do
+  context "# Enumerable" do
     before :each do
       @n1 = Bib::Publicacion.new("Nombre publicacion","4-2-2015")
       @n2 = Bib::Articulo.new("Nombre publicacion","4-2-2015","Manuel","10","140")
@@ -166,14 +169,27 @@ describe Bib do
       expect(@lista.any?).to eq(true)
     end
     it "comprobrando el metodo collect" do
-      expect(@lista.map{|i| i.class}).to eq([Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo])
-      expect(@lista.collect{|i| i.class}).to eq([Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo])
+      expect(@lista.map{|i| i.class}).to eq([Bib::Publicacion,Bib::Articulo,Bib::ARevista,Bib::APeriodico,Bib::DElectronico])
+      expect(@lista.collect{|i| i.class}).to eq([Bib::Publicacion,Bib::Articulo,Bib::ARevista,Bib::APeriodico,Bib::DElectronico])
     end
     it "comprobrando el metodo count" do
       expect(@lista.count).to eq(5)
     end
     it "comprobrando drop" do
       expect(@lista.drop(5)).to eq([])
+      expect(@lista.drop(2)).to eq([@n3,@n4,@n5])
+    end
+    it "Max de la lista..." do
+      expect(@lista.max).to eq(@n1)
+    end
+    it "Max de la lista..." do
+      expect(@lista.min).to eq(@n5)
+    end
+    it "Objeto miembro del objeto enumerable..." do
+      expect(@lista.member? (@n2)).to eq(true)
+    end
+    it "Comprobación del método Reject..." do
+      expect(@lista.reject {|x| x.is_a? Bib::Articulo}).to eq([@n1, @n5])
     end
   end
 end #describe bib

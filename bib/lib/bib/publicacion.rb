@@ -10,7 +10,7 @@ module Bib
             self.fecha <=> other.fecha
         end
         def ==(other)
-            if other.is_a?Publication
+            if other.is_a?Publicacion
                 @nombre == other.nombre && @fecha == other.fecha
             else
                 false
