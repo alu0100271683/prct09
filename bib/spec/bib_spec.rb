@@ -127,10 +127,53 @@ describe Bib do
   end #describa articulo de periodico
   describe 'DElectronico' do
     before :each do
-      @de = Bib::DElectronico.new("Nombre publicacion","4-2-2015","www.delectronico.es", "20", "Juan")
+      @de = Bib::DElectronico.new("Nombre publicacion","24-2-2015","www.delectronico.es", "20", "Juan")
     end # before
     it "Articulo hereda de Publicaicon" do
        @de.is_a? Bib::Publicacion
     end
   end #describa articulo de revista
+  context "# comparaciones jerarquicas" do
+    before :each do
+      @p = Bib::Publicacion.new("Nombre publicacion","4-2-2015")
+      @a = Bib::Articulo.new("Nombre publicacion","4-2-2015","Manuel","10","140")
+      @ar = Bib::ARevista.new("Nombre publicacion","4-2-2015","Manuel","10","140","Marca","5")
+      @ap = Bib::APeriodico.new("Nombre publicacion","4-2-2015","Manuel","10","140","El Dia","1")
+      @de = Bib::DElectronico.new("Nombre publicacion","24-2-2015","www.delectronico.es", "20", "Juan")
+    end
+    it "comparando atributo" do
+      expect(@de < @ap).to eq(true)
+    end
+  end
+  context "# comparaciones jerarquicas" do
+    before :each do
+      @n1 = Bib::Publicacion.new("Nombre publicacion","4-2-2015")
+      @n2 = Bib::Articulo.new("Nombre publicacion","4-2-2015","Manuel","10","140")
+      @n3 = Bib::ARevista.new("Nombre publicacion","4-2-2015","Manuel","10","140","Marca","5")
+      @n4 = Bib::APeriodico.new("Nombre publicacion","4-2-2015","Manuel","10","140","El Dia","1")
+      @n5 = Bib::DElectronico.new("Nombre publicacion","24-2-2015","www.delectronico.es", "20", "Juan")
+      @lista = Bib::Lista.new()
+      @lista.add(@n1)
+      @lista.add(@n2)
+      @lista.add(@n3)
+      @lista.add(@n4)
+      @lista.add(@n5)
+    end
+    it "comprobrando el metodo all?" do
+      expect(@lista.all?).to eq(true)
+    end
+    it "comprobrando el metodo any?" do
+      expect(@lista.any?).to eq(true)
+    end
+    it "comprobrando el metodo collect" do
+      expect(@lista.map{|i| i.class}).to eq([Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo])
+      expect(@lista.collect{|i| i.class}).to eq([Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo,Bib::Nodo])
+    end
+    it "comprobrando el metodo count" do
+      expect(@lista.count).to eq(5)
+    end
+    it "comprobrando drop" do
+      expect(@lista.drop(5)).to eq([])
+    end
+  end
 end #describe bib

@@ -1,7 +1,15 @@
 module Bib
     Nodo = Struct.new(:value, :next, :previus)
+    
+    class Nodo
+        include Comparable
+        def <=> (other)
+            @value <=> other.value
+        end
+    end
    
     class Lista
+        include Enumerable
         def initialize
             @head = nil
             @tail = nil
@@ -38,8 +46,8 @@ module Bib
             @tail
         end
         def del_head
-            nodo = Nodo.new(nil, nil, nil)
-            nodo2 = Nodo.new(nil, nil, nil)
+            nodo = Nodo.new()
+            nodo2 = Nodo.new()
             nodo = @head
             nodo2 = @head
             @head.previus = nil
@@ -48,6 +56,14 @@ module Bib
                 @head.next = nodo.next.next
             end
             nodo2.value
+        end
+        def each(&block)
+            current_node = @head
+            
+            while current_node != nil
+                block.call(current_node)
+                current_node = current_node.next
+            end
         end
     end
 end

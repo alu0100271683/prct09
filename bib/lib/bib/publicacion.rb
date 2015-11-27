@@ -1,9 +1,20 @@
 module Bib
     class Publicacion
+        include Comparable
         attr_reader :nombre, :fecha
         def initialize(nombre, fecha)
             @nombre = nombre
             @fecha = fecha
+        end
+        def <=> (other)
+            self.fecha <=> other.fecha
+        end
+        def ==(other)
+            if other.is_a?Publication
+                @nombre == other.nombre && @fecha == other.fecha
+            else
+                false
+            end
         end
     end #class publicacion
     class Articulo < Publicacion
@@ -14,6 +25,9 @@ module Bib
             @numero = numero
             @pagina = pagina
         end
+        def <=> (other)
+            self.fecha <=> other.fecha
+        end
     end #class articulo
     class ARevista < Articulo
         attr_reader :revista, :edicion
@@ -21,6 +35,9 @@ module Bib
             super(nombre, fecha, autor, numero, pagina)
             @revista = revista
             @edicion = edicion
+        end
+        def <=> (other)
+            self.fecha <=> other.fecha
         end
     end
     class APeriodico < Articulo
@@ -30,6 +47,9 @@ module Bib
             @periodico = periodico
             @serie = serie
         end
+        def <=> (other)
+            self.fecha <=> other.fecha
+        end
     end
     class DElectronico < Publicacion
         attr_reader :http, :n_pag, :autor
@@ -38,6 +58,9 @@ module Bib
              @http = http
              @n_pag = n_pag
              @autor = autor
+        end
+        def <=> (other)
+            self.fecha <=> other.fecha
         end
     end
 end #module
